@@ -15,6 +15,8 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 
+import java.util.HashMap;
+
 public class Window
 {
 	private JFrame frame;
@@ -24,6 +26,15 @@ public class Window
 	private JButton downloadButton;
 	private JButton clearButton;
 	private JButton pasteButton;
+	private JRadioButton mp3;
+	private JRadioButton mp4;
+	private ButtonGroup formatButtons;
+	private String format;
+	//Store all those flags in a Map
+	private boolean mp3Clicked = true;
+	private boolean mp4Clicked = false;
+	private HashMap<String, JRadioButton> collectionOfFormats;
+
 	/*
 	 * first download file
 	 * share file to connected device
@@ -42,6 +53,15 @@ public class Window
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(640, 200);
 
+		//set position of window
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		int w = frame.getSize().width;
+		int h = frame.getSize().height;
+		int x = (dim.width - w) / 2;
+		int y = (dim.height - h) / 2;
+		frame.setLocation(x, y);
+
+
 		panel = new JPanel(new BorderLayout());
 		label = new JLabel("Enter Link");
 
@@ -58,12 +78,53 @@ public class Window
 
 		//paste system Clipboard into TextField
 		pasteButton = new JButton("Paste");
-
 		shareButton = new JButton("Share");
+
+		//Checkbox if download mp3 or mp4
+		mp3 = new JRadioButton("Mp3", true);
+		mp4 = new JRadioButton("Mp4", false);
+		formatButtons = new ButtonGroup();
+
+		formatButtons.add(mp3);
+		formatButtons.add(mp4);
+
+		collectionOfFormats = new HashMap<>();
+		collectionOfFormats.put("mp3", mp3);
+		collectionOfFormats.put("mp4", mp4);
+
+		/*mp3.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					//Checkbox mp3 is checked
+					mp3Clicked = true;
+				} else if (e.getStateChange() == ItemEvent.DESELECTED) {
+					mp3Clicked = false;
+				}
+			}
+		});
+		mp4.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					//Checkbox mp4 is checked
+					mp4Clicked = true;
+				} else if (e.getStateChange() == ItemEvent.DESELECTED) {
+					mp4Clicked = false;
+				}
+			}
+		});
+		*/
+		//if both are pressed make error message "Only one format can be chosen!"
+
+
 
 		//add actionListener for important buttons
 		downloadButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//check the format to download
+				checkFormat();
+
 				String link = linkTextField.getText();
 
 				if (pwd == null || !pwd.endsWith("/src/download.sh"))
@@ -95,7 +156,8 @@ public class Window
 				}
 
 				//run download script
-				ProcessBuilder pb = new ProcessBuilder("sudo", pwd, link);
+				System.out.println("format: " + format);
+				ProcessBuilder pb = new ProcessBuilder(pwd, link, format);
 
 				try {
 					Process process = pb.start();
@@ -113,10 +175,17 @@ public class Window
 						 * aka loop through the output
 						 * until there is no more output
 						 */
+						 System.out.println(prevDownloaded);
 						 filename = prevDownloaded;
+						 /*
+						  * TODO implement progressbar read data here,
+						  * data is in filename just fetch the % from that
+						  */
 					}
 					prevDownloaded = filename;
-					prevDownloaded += ".mp3";
+					prevDownloaded += ".";
+					prevDownloaded += format;
+					System.out.println("Filename: " + prevDownloaded);
 				}
 				catch (IOException ev) {
 					ev.printStackTrace();
@@ -197,6 +266,10 @@ public class Window
 		titelRow.add(label);
 
 		JPanel textFieldRow = new JPanel();
+		JPanel northRow = new JPanel();
+		northRow.add(mp3, BorderLayout.EAST);
+		northRow.add(mp4, BorderLayout.WEST);
+		textFieldRow.add(northRow, BorderLayout.NORTH);
 		textFieldRow.add(linkTextField, BorderLayout.EAST);
 		textFieldRow.add(clearButton, BorderLayout.WEST);
 		textFieldRow.add(pasteButton, BorderLayout.SOUTH);
@@ -221,5 +294,29 @@ public class Window
 		frame.setVisible(true);
 	}
 
+	private String checkIfBothCheckBoxesClicked() {
+		/*
+		 * check which JRadioButton is checked
+		 * or none at all
+		 */
+		for (String key: collectionOfFormats.keySet()) {
+			JRadioButton temp = collectionOfFormats.get(key);
+			if (temp.isSelected()) {
+				return key;
+			}
+		}
+
+		return null;
+	}
+
+	private void checkFormat() {
+		String temp = checkIfBothCheckBoxesClicked();
+
+		switch (temp) {
+			case "mp3" -> format = temp;
+			case "mp4" -> format = temp;
+			default -> JOptionPane.showMessageDialog(frame, "Choose one of the given formats!", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
 
 }
