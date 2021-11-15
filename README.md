@@ -26,8 +26,10 @@ run the ```Main.class``` by either
 or
 > make run
 
-or create a sym link in ```/usr/bin/``` and run
+or create a sym link in ```/usr/bin/``` to ```downloadWrapper.sh``` and run
 > download
+
+from anywhere
 
 ## If you're using KDE
 ---
