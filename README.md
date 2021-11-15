@@ -1,4 +1,4 @@
-# YoutubeToMp3
+# download
 
 ![](Screenshot.png)
 
@@ -17,19 +17,17 @@ JVM
 Clone this repo via
 > git clone https://github.com/gooosz/YoutubeToMp3.git
 
-install youtube-dl
-> make youtube-dl \
-You will be prompted for your sudo password.
-
 compile everything using
 > make all
 
-run the Main.class by either
+run the ```Main.class``` by either
 > java Main
 
 or
-
 > make run
+
+or create a sym link in ```/usr/bin/``` and run
+> download
 
 ## If you're using KDE
 ---
@@ -39,8 +37,10 @@ Just paste the link and click on Share and the song will be stored \
 on your Desktop as well as on your Mobile,
 if you are connected via KDEConnect.
 
-# How to convert a Youtube video to mp3
+# How to convert a Youtube video to mp3 or mp4
 -run the program \
 -copy the Video URL into the textfield \
+-choose the format by clicking the corresponding button (mp3 is default)
 -click on Download \
--the mp3 will be stored in a subdirectory called "songs/"
+-the mp3 will be stored in a subdirectory called "songs/" \
+mp4 will be stored in a subdirectory called "videos/"
