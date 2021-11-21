@@ -40,9 +40,6 @@ on your Desktop as well as on your Mobile,
 if you are connected via KDEConnect.
 
 # How to convert a Youtube video to mp3 or mp4
--run the program \
--copy the Video URL into the textfield \
--choose the format by clicking the corresponding button (mp3 is default)
--click on Download \
+-pretty self-explanatory
 -the mp3 will be stored in a subdirectory called "songs/" \
 mp4 will be stored in a subdirectory called "videos/"
