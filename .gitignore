@@ -1,0 +1,22 @@
+/songs/
+
+#gradle stuff
+*.class
+*.ctxt
+.mtj.tmp/
+*.jar
+*.war
+*.ear
+hs_err_pid*
+.gradle/
+/build/
+!gradle-wrapper.jar
+.gradletasknamecache
+bin/**
+gen/**
+*.iml
+*.ipr
+*.iws
+build/
+bin/
+.idea/
