@@ -17,14 +17,14 @@ JVM
 Clone this repo via
 > git clone https://github.com/gooosz/YoutubeToMp3.git
 
-compile everything using
-> make all
+compile everything using gradle
+> ./gradlew build
 
 run the ```Main.class``` by either
 > java Main
 
 or
-> make run
+> make
 
 or create a sym link in ```/usr/bin/``` to ```downloadWrapper.sh``` and run
 > download
